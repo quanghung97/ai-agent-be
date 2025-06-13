@@ -11,8 +11,9 @@ message ChatRequest {
   string user_id = 1;
   string message = 2;
   string session_id = 3;
-  map<string, string> context = 4;
-  TTSSettings tts_settings = 5;
+  string agent_id = 4;  // Add agent_id field
+  map<string, string> context = 5;
+  TTSSettings tts_settings = 6;
 }
 
 message TTSSettings {

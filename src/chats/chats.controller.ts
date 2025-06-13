@@ -1,13 +1,15 @@
 import { Controller, Post, Sse, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { Observable, Subject, firstValueFrom } from 'rxjs';
-import { ChatService } from './grpc/chat.service';
+import { ChatsServicegRPC } from './grpc/chats.grpc';
 import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
+import { ChatsService } from './services/chats.service';
 
-@ApiTags('chat')
-@Controller('chat')
+@ApiTags('Chat')
+@Controller('chats')
 export class ChatController {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(private readonly chatsServicegRPC: ChatsServicegRPC,
+  private readonly chatsService: ChatsService) {}
 
   @Post('message')
   @ApiOperation({ summary: 'Send a single chat message' })
@@ -21,8 +23,11 @@ export class ChatController {
   async sendMessage(
     @Body() chatRequest: ChatRequestDto,
   ): Promise<ChatResponseDto> {
+    // Ensure the agent configuration is set up
+    await this.chatsService.ensureAgentConfig(chatRequest.agent_id);
+
     const response = await firstValueFrom(
-      this.chatService.processMessage(chatRequest),
+      await this.chatsServicegRPC.processMessage(chatRequest),
     );
 
     // TODO: storage for audio content
@@ -42,13 +47,13 @@ export class ChatController {
     type: ChatResponseDto,
     isArray: true,
   })
-  streamChat(): Observable<any> {
+  async streamChat(): Promise<Observable<any>> {
     const subject = new Subject<any>();
     const requests = new Subject<any>();
 
-    const stream = this.chatService.streamChat(requests);
+    const stream = this.chatsServicegRPC.streamChat(requests);
 
-    stream.subscribe({
+    (await stream).subscribe({
       next: (response) => {
         // Convert audio content to base64 if present
         if (response.audio_content) {

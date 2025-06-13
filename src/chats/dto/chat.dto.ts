@@ -73,6 +73,13 @@ export class ChatRequestDto {
   session_id: string;
 
   @ApiProperty({
+    description: 'The agent ID',
+    example: 'agent-789',
+    required: true,
+  })
+  agent_id: string;
+
+  @ApiProperty({
     description: 'Additional context for the message',
     example: { language: 'en', timezone: 'UTC' },
     required: false,
@@ -87,7 +94,7 @@ export class ChatRequestDto {
   tts_settings?: TTSSettingsDto;
 }
 
-export class MetadataDto {
+export class MetadataMessageDto {
   @ApiProperty({
     description: 'The detected intent',
     example: 'greeting',
@@ -104,7 +111,9 @@ export class MetadataDto {
     description: 'Additional metadata',
     example: { confidence: '0.95' },
     type: 'object',
-    additionalProperties: true,
+    additionalProperties: {
+      type: 'string',
+    },
   })
   additional_data: Record<string, string>;
 }
@@ -136,15 +145,14 @@ export class ChatResponseDto {
 
   @ApiProperty({
     description: 'Message metadata',
-    type: MetadataDto,
+    type: MetadataMessageDto,
   })
-  metadata: MetadataDto;
+  metadata: MetadataMessageDto;
 
   @ApiProperty({
     description: 'Audio content in bytes',
-    type: 'string',
     format: 'binary',
     required: false,
   })
-  audio_content?: string;
+  audio_content?: Uint8Array | string;
 }
