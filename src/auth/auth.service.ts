@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { User } from './entities/user.entity';
+import { User } from 'src/users/entities/user.entity';
 
 interface OAuthUserData {
   email: string;
@@ -59,5 +59,24 @@ export class AuthService {
         provider: user.provider,
       },
     };
+  }
+
+    async verify(headerAuthorization: string) {
+    try {
+      const decoded: {
+        sub: string;
+        roles: string[];
+        token_type: string;
+        iat: number;
+        exp: number;
+      } = await this.jwtService.verify(headerAuthorization.split(' ')[1]);
+
+      const user = await this.userRepository.findOne({
+        where: { id: Equal(decoded.sub) },
+      });
+      return user;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

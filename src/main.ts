@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { RedisIoAdapter } from './socket/adapter/redis-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +10,16 @@ async function bootstrap() {
 
   // CORS configuration
   app.enableCors();
+
+  // Create RedisIoAdapter for SocketIO
+  // more info: https://www.npmjs.com/package/@socket.io/redis-adapter
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis(
+    configService.get<string>('REDIS_HOST'),
+    configService.get<number>('REDIS_PORT'),
+    configService.get<string>('REDIS_PASSWORD'),
+  );
+  app.useWebSocketAdapter(redisIoAdapter);
 
   const apiPrefix = configService.get<string>('API_PREFIX');
   const apiVersion = configService.get<string>('API_VERSION', '1.0');

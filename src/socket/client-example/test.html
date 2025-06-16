@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+    <script>
+      const socket = io('http://localhost:3001', {
+        extraHeaders: {
+          Authorization: "Bearer your_access_token_is_here"
+        }
+      });
+      socket.on('connect', function() {
+        console.log('Connected');
+        // subscribe private channel with define format `user-${user.id}`
+        socket.emit('subscribe');
+        console.log('subscribed');
+      });
+
+      socket.on('notification', function(data) {
+        console.log('notification', data);
+      });
+    </script>
+  </head>
+
+  <body></body>
+</html>

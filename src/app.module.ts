@@ -4,12 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ChatsModule } from './chats/chats.module';
 import { AgentsModule } from './agents/agents.module';
-import { User } from './auth/entities/user.entity';
+import { User } from './users/entities/user.entity';
 import { Agent } from './agents/entities/agent.entity';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { CacheableMemory } from 'cacheable';
     AuthModule,
     ChatsModule,
     AgentsModule,
+    UsersModule
   ],
 })
 export class AppModule {}
