@@ -37,7 +37,7 @@ export class ChatsService {
                 world_context: agent.world_context,
             };
 
-            await this.cacheManager.set(`agent:${agentId}:config`, defaultConfig);
+            await this.cacheManager.set(`agent:${agentId}:config`, defaultConfig, 300000); // Cache for 5 minutes
         }
     }
 }

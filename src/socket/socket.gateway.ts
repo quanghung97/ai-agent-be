@@ -7,6 +7,10 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { ChatsServicegRPC } from '../chats/grpc/chats.grpc';
+import { ChatMessage } from './interfaces/chat.interface';
+import { ChatsService } from 'src/chats/services/chats.service';
+import { firstValueFrom } from 'rxjs';
 
 interface UserChannelMap {
   [userId: string]: string; // Map user ID to their channel ID
@@ -18,7 +22,11 @@ interface UserChannelMap {
   },
 })
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private chatsServicegRPC: ChatsServicegRPC,
+    private chatsService: ChatsService,
+  ) {}
   @WebSocketServer() server: Server;
   private userChannels: UserChannelMap = {};
 
@@ -93,6 +101,40 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server.to(channelId).emit('notification', notification); // Emit notification to the user's channel
     } else {
       // Handle user not subscribed to any channel
+    }
+  }
+
+  @SubscribeMessage('chat-message')
+  async handleChatMessage(client: Socket, payload: ChatMessage) {
+    const user = await this.authService.verify(
+      client?.handshake?.headers?.authorization || '',
+    );
+
+    if (!user) {
+      client.disconnect();
+      return;
+    }
+    // Ensure the agent configuration is set up
+    await this.chatsService.ensureAgentConfig(payload.agentId);
+
+    // Process message through gRPC service
+    const response = await firstValueFrom(await this.chatsServicegRPC.processMessage({
+      agent_id: payload.agentId,
+      message: payload.message,
+      session_id: payload.sessionId,
+      user_id: user.id,
+    }));
+
+
+    console.log(`Chat message processed for user: ${user.id}`, response);
+
+    // Emit the response to the user's channel
+    const channelId = this.userChannels[user.id];
+    if (channelId) {
+      this.server.to(channelId).emit('chat-response', {
+        ...response,
+        timestamp: new Date(),
+      });
     }
   }
 }

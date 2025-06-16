@@ -9,5 +9,6 @@ import { ChatsService } from './services/chats.service';
   imports: [TypeOrmModule.forFeature([Agent])],
   controllers: [ChatController],
   providers: [ChatsServicegRPC, ChatsService],
+  exports: [ChatsServicegRPC, ChatsService],
 })
 export class ChatsModule {}

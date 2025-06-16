@@ -11,6 +11,7 @@ import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';
 import { UsersModule } from './users/users.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { UsersModule } from './users/users.module';
       }),
       inject: [ConfigService],
     }),
+    SocketModule,
     AuthModule,
     ChatsModule,
     AgentsModule,

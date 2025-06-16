@@ -2,9 +2,9 @@
   <head>
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
     <script>
-      const socket = io('http://localhost:3001', {
+      const socket = io('http://localhost:8000', {
         extraHeaders: {
-          Authorization: "Bearer your_access_token_is_here"
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbGluZy5raGFAZ21haWwuY29tIiwic3ViIjoiMTkyZjQwN2ItYzZiZC00MDY2LWFlNWEtYzNlMmVkYmUzMzY2IiwiaWF0IjoxNzUwMDYzMzg2LCJleHAiOjE3NTA2NjgxODZ9.UikcFasc9itdfu9zFvDQdl4Z-StJED3mK6C5V-WZI6Y"
         }
       });
       socket.on('connect', function() {
@@ -12,6 +12,20 @@
         // subscribe private channel with define format `user-${user.id}`
         socket.emit('subscribe');
         console.log('subscribed');
+
+        // Send a chat message
+        socket.emit('chat-message', {
+          agentId: '8d56a4d4-b35c-429c-87f4-29c8d60ee563',
+          message: 'Hello!',
+          sessionId: 'session-123',
+          userId: '192f407b-c6bd-4066-ae5a-c3e2edbe3366',
+          timestamp: new Date()
+        });
+
+        // Listen for chat responses
+        socket.on('chat-response', (response) => {
+          console.log('Received response:', response);
+        });
       });
 
       socket.on('notification', function(data) {
