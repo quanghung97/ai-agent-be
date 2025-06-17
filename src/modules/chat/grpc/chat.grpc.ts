@@ -22,7 +22,7 @@ export class ChatServicegRPC implements OnModuleInit {
       transport: Transport.GRPC,
       options: {
         package: 'services.chats',
-        protoPath: 'src/ai-agent-proto/services/chats/chat_service.proto',
+        protoPath: 'src/proto/services/chats/chat_service.proto',
         url: grpcUrl,
         loader: {
           keepCase: true,
