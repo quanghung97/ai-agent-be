@@ -7,9 +7,9 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { ChatsServicegRPC } from '../chats/grpc/chats.grpc';
+import { ChatServicegRPC } from '../chat/grpc/chat.grpc';
 import { ChatMessage } from './interfaces/chat.interface';
-import { ChatsService } from 'src/modules/chats/services/chats.service';
+import { ChatService } from 'src/modules/chat/services/chat.service';
 import { firstValueFrom } from 'rxjs';
 
 interface UserChannelMap {
@@ -24,8 +24,8 @@ interface UserChannelMap {
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private authService: AuthService,
-    private chatsServicegRPC: ChatsServicegRPC,
-    private chatsService: ChatsService,
+    private chatServicegRPC: ChatServicegRPC,
+    private chatService: ChatService,
   ) {}
   @WebSocketServer() server: Server;
   private userChannels: UserChannelMap = {};
@@ -115,10 +115,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
     // Ensure the agent configuration is set up
-    await this.chatsService.ensureAgentConfig(payload.agentId);
+    await this.chatService.ensureAgentConfig(payload.agentId);
 
     // Process message through gRPC service
-    const response = await firstValueFrom(await this.chatsServicegRPC.processMessage({
+    const response = await firstValueFrom(await this.chatServicegRPC.processMessage({
       agent_id: payload.agentId,
       message: payload.message,
       session_id: payload.sessionId,

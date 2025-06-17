@@ -12,7 +12,7 @@ export class Agent extends BaseEntity {
   @Column()
   age: number;
 
-  @Column('json')
+  @Column('json', { name: 'personality' })
   personality: {
     traits: {
       friendliness: number;
@@ -29,16 +29,16 @@ export class Agent extends BaseEntity {
   @Column('simple-array')
   interests: string[];
 
-  @Column()
-  communication_style: string;
+  @Column({ name: 'communication_style' })
+  communicationStyle: string;
 
   @Column({ default: 'en' })
   language: string;
 
-  @Column()
-  artistic_style: string;
+  @Column({ name: 'artistic_style' })
+  artisticStyle: string;
 
-  @Column('json')
+  @Column('json', { name: 'appearance' })
   appearance: {
     height: string;
     build: string;
@@ -48,7 +48,7 @@ export class Agent extends BaseEntity {
     distinguishing_features: string[];
   };
 
-  @Column('json')
+  @Column('json', { name: 'background' })
   background: {
     origin: string;
     experiences: string[];
@@ -56,8 +56,8 @@ export class Agent extends BaseEntity {
     occupation?: string;
   };
 
-  @Column('json')
-  behavioral_settings: {
+  @Column('json', { name: 'behavioral_settings' })
+  behavioralSettings: {
     speech_patterns: {
       tone: string;
       vocabulary: string;
@@ -69,21 +69,21 @@ export class Agent extends BaseEntity {
     };
   };
 
-  @Column('json')
-  world_context: {
+  @Column('json', { name: 'world_context' })
+  worldContext: {
     setting: string;
     technology_level: string;
     social_structure: string;
   };
 
-  @Column('json')
-  knowledge_base: Record<string, string[]>;
+  @Column('json', { name: 'knowledge_base' })
+  knowledgeBase: Record<string, string[]>;
 
-  @Column({ default: true })
+  @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
   generatePrompt(): string {
-    return `You are ${this.name}, a ${this.age}-year-old ${this.gender} living in ${this.world_context.setting}.
+    return `You are ${this.name}, a ${this.age}-year-old ${this.gender} living in ${this.worldContext.setting}.
 
 CHARACTER IDENTITY:
 - Background: ${this.background.origin}
@@ -104,11 +104,11 @@ APPEARANCE:
 - Distinctive: ${this.appearance.distinguishing_features.join(', ')}
 
 COMMUNICATION STYLE:
-- Tone: ${this.behavioral_settings.speech_patterns.tone}
-- Vocabulary: ${this.behavioral_settings.speech_patterns.vocabulary}
-- Catchphrases: ${this.behavioral_settings.speech_patterns.catchphrases.join(', ')}
-- Detail Level: ${this.behavioral_settings.response_style.detail_level}
-- Emotional Expression: ${this.behavioral_settings.response_style.emotional_expressiveness}
+- Tone: ${this.behavioralSettings.speech_patterns.tone}
+- Vocabulary: ${this.behavioralSettings.speech_patterns.vocabulary}
+- Catchphrases: ${this.behavioralSettings.speech_patterns.catchphrases.join(', ')}
+- Detail Level: ${this.behavioralSettings.response_style.detail_level}
+- Emotional Expression: ${this.behavioralSettings.response_style.emotional_expressiveness}
 
 PERSONALITY TRAITS (0-1 scale):
 - Friendliness: ${this.personality.traits.friendliness}
@@ -118,9 +118,9 @@ PERSONALITY TRAITS (0-1 scale):
 - Detail-oriented: ${this.personality.traits.detail_oriented}
 
 WORLD CONTEXT:
-- Setting: ${this.world_context.setting}
-- Technology Level: ${this.world_context.technology_level}
-- Social Structure: ${this.world_context.social_structure}
+- Setting: ${this.worldContext.setting}
+- Technology Level: ${this.worldContext.technology_level}
+- Social Structure: ${this.worldContext.social_structure}
 
 BEHAVIORAL RULES:
 1. Stay in character at all times
@@ -131,6 +131,6 @@ BEHAVIORAL RULES:
 6. If you are not completely sure, respond exactly with: i don't know (lowercase, no explanation)
 7. Use your catchphrases naturally when appropriate
 
-Remember: You are ${this.name} living in ${this.world_context.setting}. Never break character.`;
+Remember: You are ${this.name} living in ${this.worldContext.setting}. Never break character.`;
   }
 }

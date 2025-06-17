@@ -56,7 +56,7 @@ import { MediaModule } from './modules/media/media.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [User, Agent],
-        synchronize: true, // set to false in production
+        synchronize: configService.get<string>('DB_SYNCHRONIZE') === 'true',
         logging: true,
       }),
       inject: [ConfigService],

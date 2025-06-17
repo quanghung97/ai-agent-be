@@ -1,5 +1,21 @@
 version: '3.8'
 services:
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: nestjs-api
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - GRPC_HOST=grpc-server
+    depends_on:
+      - postgres
+      - redis
+      - minio
   postgres:
     image: postgres:17-alpine
     ports:
@@ -21,6 +37,17 @@ services:
       - '9000:9000'
       - '9001:9001'
     volumes:
-      - bvbm-minio-data:/data
+      - minio-data:/data
+  
+  redis:
+    image: redis:6-alpine
+    container_name: redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+
 volumes:
   postgres_data:
+  minio-data:

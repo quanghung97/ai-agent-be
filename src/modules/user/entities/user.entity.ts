@@ -12,10 +12,10 @@ export class User extends BaseEntity {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'google_id', nullable: true, unique: true })
   googleId: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'apple_id', nullable: true })
   appleId: string;
 
   @Column({ nullable: true })
@@ -23,4 +23,7 @@ export class User extends BaseEntity {
 
   @Column({ default: 'oauth' })
   provider: string;
+
+  @Column({ name: 'is_active', default: true })
+  isActive: boolean;
 }

@@ -21,20 +21,20 @@ export class ChatService {
                 throw new NotFoundException(`Agent with ID ${agentId} not found`);
             }
 
-            // Create default agent config
+            // Create default agent config, using snake_case for keys code style in python core grpc readability
             const defaultConfig = {
                 name: agent.name,
                 gender: agent.gender,
                 age: agent.age,
                 personality: agent.personality,
                 interests: agent.interests,
-                communication_style: agent.communication_style,
+                communication_style: agent.communicationStyle,
                 language: agent.language,
-                artistic_style: agent.artistic_style,
+                artistic_style: agent.artisticStyle,
                 appearance: agent.appearance,
                 background: agent.background,
-                behavioral_settings: agent.behavioral_settings,
-                world_context: agent.world_context,
+                behavioral_settings: agent.behavioralSettings,
+                world_context: agent.worldContext,
             };
 
             await this.cacheManager.set(`agent:${agentId}:config`, defaultConfig, 300000); // Cache for 5 minutes
