@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { ChatsModule } from './chats/chats.module';
-import { AgentsModule } from './agents/agents.module';
-import { User } from './users/entities/user.entity';
-import { Agent } from './agents/entities/agent.entity';
+import { AuthModule } from './modules/auth/auth.module';
+import { ChatModule } from './modules/chat/chat.module';
+import { AgentModule } from './modules/agent/agent.module';
+import { User } from './modules/user/entities/user.entity';
+import { Agent } from './modules/agent/entities/agent.entity';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';
-import { UsersModule } from './users/users.module';
-import { SocketModule } from './socket/socket.module';
+import { UserModule } from './modules/user/user.module';
+import { SocketModule } from './modules/socket/socket.module';
+import { MediaModule } from './modules/media/media.module';
 
 @Module({
   imports: [
@@ -61,10 +62,11 @@ import { SocketModule } from './socket/socket.module';
       inject: [ConfigService],
     }),
     SocketModule,
+    MediaModule,
     AuthModule,
-    ChatsModule,
-    AgentsModule,
-    UsersModule
+    ChatModule,
+    AgentModule,
+    UserModule
   ],
 })
 export class AppModule {}
