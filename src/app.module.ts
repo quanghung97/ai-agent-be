@@ -4,8 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { AgentModule } from './modules/agent/agent.module';
-import { User } from './modules/user/entities/user.entity';
-import { Agent } from './modules/agent/entities/agent.entity';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
@@ -55,7 +53,7 @@ import { MediaModule } from './modules/media/media.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, Agent],
+        autoLoadEntities: true,
         synchronize: configService.get<string>('DB_SYNCHRONIZE') === 'true',
         logging: true,
       }),

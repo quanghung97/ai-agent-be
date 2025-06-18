@@ -4,7 +4,7 @@
     <script>
       const socket = io('http://localhost:8000', {
         extraHeaders: {
-          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbGluZy5raGFAZ21haWwuY29tIiwic3ViIjoiMTkyZjQwN2ItYzZiZC00MDY2LWFlNWEtYzNlMmVkYmUzMzY2IiwiaWF0IjoxNzUwMDYzMzg2LCJleHAiOjE3NTA2NjgxODZ9.UikcFasc9itdfu9zFvDQdl4Z-StJED3mK6C5V-WZI6Y"
+          Authorization: "Bearer your-bearer-token"
         }
       });
       socket.on('connect', function() {

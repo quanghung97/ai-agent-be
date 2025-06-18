@@ -1,15 +1,38 @@
-import { Controller, Post, Sse, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { Controller, Post, Sse, Body, Get, UseGuards, Req } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { Observable, Subject, firstValueFrom } from 'rxjs';
 import { ChatServicegRPC } from './grpc/chat.grpc';
 import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
 import { ChatService } from './services/chat.service';
+import { Paginate, PaginateQuery, ApiOkPaginatedResponse, ApiPaginationQuery } from 'nestjs-paginate';
+import { AuthGuard } from '@nestjs/passport';
+import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { conversationPaginateConfig, ConversationPaginateDto } from './filter/conversation.filter';
 
 @ApiTags('Chat')
 @Controller('chats')
+@UseGuards(AuthGuard('jwt'))
 export class ChatController {
-  constructor(private readonly chatServicegRPC: ChatServicegRPC,
-  private readonly chatService: ChatService) {}
+  constructor(
+    private readonly chatServicegRPC: ChatServicegRPC,
+    private readonly chatService: ChatService
+  ) {}
+
+  @Get('history')
+  @ApiOperation({ summary: 'Get paginated chat history' })
+  @ApiPaginationQuery(conversationPaginateConfig)
+  @ApiOkPaginatedResponse(ConversationPaginateDto, conversationPaginateConfig)
+  @ApiResponse({
+    status: 200,
+    description: 'Returns paginated chat history',
+    type: ApiOkPaginatedResponse
+  })
+  async getHistory(
+    @Paginate() query: PaginateQuery,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.chatService.getConversationHistory(query, req.user.id);
+  }
 
   @Post('message')
   @ApiOperation({ summary: 'Send a single chat message' })

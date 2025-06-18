@@ -2,28 +2,28 @@ import { Column, Index, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { Media } from './media.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
 
-@Entity()
+@Entity('media_imageables')
 @Index(['imageableId', 'imageableType'])
 export class MediaImageable extends BaseEntity {
-  @Column({ type: 'uuid' })
+  @Column({ name: 'imageable_id', type: 'uuid' })
   imageableId: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'imageable_type', type: 'varchar', length: 255 })
   @Index()
   imageableType: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ name: 'zone', type: 'varchar', length: 100 })
   zone: string;
 
-  @Column({ type: 'integer', default: 0 })
+  @Column({ name: 'order', type: 'integer', default: 0 })
   order?: number;
 
   @ManyToOne(() => Media, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
+  @JoinColumn({ name: 'media_id' })
   media: Media;
 
-  @Column()
+  @Column({ name: 'media_id' })
   mediaId: string;
 }

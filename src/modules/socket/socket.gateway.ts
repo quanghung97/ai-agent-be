@@ -125,10 +125,15 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       user_id: user.id,
     }));
 
+    // Save conversation to database
+    await this.chatService.saveConversation(
+      payload.sessionId,
+      user.id,
+      payload.agentId,
+      payload.message,
+      response
+    );
 
-    console.log(`Chat message processed for user: ${user.id}`, response);
-
-    // Emit the response to the user's channel
     const channelId = this.userChannels[user.id];
     if (channelId) {
       this.server.to(channelId).emit('chat-response', {

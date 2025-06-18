@@ -1,10 +1,12 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class CreateMediaDto {
   @ApiProperty({ required: false })
   @IsOptional()
-  isFolder?: number;
+  @Transform(({ value }) => Boolean(value))
+  isFolder?: boolean;
 
   @ApiProperty({ required: false })
   @IsOptional()

@@ -79,8 +79,17 @@ export class Agent extends BaseEntity {
   @Column('json', { name: 'knowledge_base' })
   knowledgeBase: Record<string, string[]>;
 
-  @Column({ name: 'is_active', default: true })
+  @Column({ name: 'is_active', default: true }) // for admin control TODO: change to false later
   isActive: boolean;
+
+  @Column({ name: 'is_public', default: false }) // for public or draft agents
+  isPublic: boolean;
+
+  @Column({ nullable: true })
+  createdBy: string;
+
+  @Column({ nullable: true })
+  updatedBy: string;
 
   generatePrompt(): string {
     return `You are ${this.name}, a ${this.age}-year-old ${this.gender} living in ${this.worldContext.setting}.

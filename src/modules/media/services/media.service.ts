@@ -65,7 +65,7 @@ export class MediaService {
   }
 
   async findAll(req: any) {
-    const defaultSort: Record<string, string> = { createdAt: 'DESC' };
+    const defaultSort: Record<string, string> = { created_at: 'DESC' }; // Updated to snake_case
     let take = Number(req.query.limit || 10);
     let page = Number(req.query.page || 1);
 
@@ -83,13 +83,18 @@ export class MediaService {
     const orderBy: Record<string, string> = {};
 
     if (sortField) {
-      orderBy[sortField] = sortOrder ?? 'asc';
+      // Convert camelCase to snake_case for database queries
+      const dbField = sortField.replace(
+        /[A-Z]/g,
+        letter => `_${letter.toLowerCase()}`,
+      );
+      orderBy[dbField] = sortOrder?.toLowerCase() ?? 'asc';
     }
 
     const [result, total] = await this.mediaRepository.findAndCount({
       order: Object.keys(orderBy).length ? orderBy : defaultSort,
-      take: take,
-      skip: skip,
+      take,
+      skip,
     });
 
     return {
@@ -180,7 +185,9 @@ export class MediaService {
 
       if (!this._isValidFileType(file.mimetype)) {
         throw new BadRequestException(
-          `The file you attempted to upload is not in the supported format. Please ensure that your file is in one of the following formats: ${Object.values(FileType).join(', ')}`,
+          `The file you attempted to upload is not in the supported format. Please ensure that your file is in one of the following formats: ${Object.values(FileType).join(
+            ', ',
+          )}`,
         );
       }
     }
@@ -209,7 +216,7 @@ export class MediaService {
         fileSize: file.size,
         mimeType: file.mimetype,
         extension: path.extname(file.originalname),
-        createdBy: req.user.id,
+        createdBy: req.user?.id,
         folderId: (req.body as any)?.folderId,
       };
 
@@ -260,7 +267,9 @@ export class MediaService {
     //     !allowedFileTypes.includes(file.mimetype)
     //   ) {
     //     throw new BadRequestException(
-    //       `The file you attempted to upload is not in the supported format. Please ensure that your file is in one of the following formats: ${allowedFileTypes.join(',')}`,
+    //       `The file you attempted to upload is not in the supported format. Please ensure that your file is in one of the following formats: ${allowedFileTypes.join(
+    //         ',',
+    //       )}`,
     //     );
     //   }
     // }
@@ -318,15 +327,13 @@ export class MediaService {
       relations: { media: true },
     });
 
-    return mediaImageable.map(m => {
-      return {
-        zone: m.zone,
-        order: m.order,
-        mediaId: m.media.id,
-        isFolder: m.media.isFolder,
-        fileName: m.media.fileName,
-        fileUrl: m.media.fileUrl,
-      };
-    });
+    return mediaImageable.map(m => ({
+      zone: m.zone,
+      order: m.order,
+      mediaId: m.mediaId,
+      isFolder: m.media.isFolder,
+      fileName: m.media.fileName,
+      fileUrl: m.media.fileUrl,
+    }));
   }
 }

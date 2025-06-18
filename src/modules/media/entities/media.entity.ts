@@ -2,32 +2,38 @@ import { Column, Index, Entity, OneToMany } from 'typeorm';
 import { MediaImageable } from './mediaImageable.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
 
-@Entity()
+@Entity('medias')
 export class Media extends BaseEntity {
-  @Column({ type: 'number', default: false })
-  isFolder: number;
+  @Column({ name: 'is_folder', default: false })
+  isFolder: boolean;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ name: 'file_name', type: 'varchar', length: 100 })
   fileName: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'file_path', type: 'varchar', length: 255 })
   filePath: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'file_url', type: 'varchar', length: 255 })
   fileUrl: string;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ name: 'extension', type: 'varchar', length: 20 })
   extension: string;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ name: 'mime_type', type: 'varchar', length: 20 })
   mimeType: string;
 
-  @Column({ type: 'integer' })
+  @Column({ name: 'file_size', type: 'integer' })
   fileSize: number;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'folder_id', type: 'uuid', nullable: true })
   @Index()
   folderId?: string;
+
+  @Column({ name: 'created_by', nullable: true })
+  createdBy: string;
+
+  @Column({ name: 'updated_by', nullable: true })
+  updatedBy: string;
 
   @OneToMany(() => MediaImageable, mediaImageable => mediaImageable.media)
   mediaImagebles: MediaImageable[];
