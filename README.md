@@ -72,7 +72,7 @@ ai-agent-be/
 
 ### Prerequisites
 
-- Node.js (v18+ recommended)
+- Node.js (v22+ recommended)
 - npm (v9+ recommended)
 - Docker & Docker Compose (optional, for local development)
 
