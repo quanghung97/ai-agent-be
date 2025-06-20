@@ -63,9 +63,7 @@ export class ChatService {
             message,
             response: response.response,
             metadata: {
-                intent: response.metadata.intent,
-                turn_count: response.metadata.turn_count,
-                additional_data: response.metadata.additional_data,
+                timestamp: response.metadata?.timestamp, // Only timestamp as per proto
             },
             audioUrl: audioUrl
         });
@@ -79,6 +77,19 @@ export class ChatService {
             .where('conversation.user_id = :userId', { userId });
 
         return paginate(query, queryBuilder, conversationPaginateConfig);
+    }
+
+    async getRecentConversations(userId: string, agentId: string, limit: number = 3): Promise<Conversation[]> {
+        return this.conversationRepository.find({
+            where: {
+                userId: Equal(userId),
+                agentId: Equal(agentId)
+            },
+            order: {
+                createdAt: 'DESC'
+            },
+            take: limit
+        });
     }
 
     private async saveAudioContent(audioContent: Uint8Array | undefined): Promise<string> {

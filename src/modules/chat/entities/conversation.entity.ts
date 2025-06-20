@@ -21,11 +21,7 @@ export class Conversation extends BaseEntity {
   response: string;
 
   @Column('jsonb', { nullable: true })
-  metadata: {
-    intent: string;
-    turn_count: number;
-    additional_data: Record<string, string>;
-  };
+  metadata: Record<string, any>;
 
   @Column({ name: 'audio_url', nullable: true })
   audioUrl?: string;

@@ -19,7 +19,7 @@ export interface ChatRequest {
   message: string;
   session_id: string;
   agent_id: string;
-  context?: { [key: string]: string };
+  recent_history?: string; // JSON string
   tts_settings?: TTSSettings;
 }
 
@@ -28,12 +28,9 @@ export interface ChatResponse {
   session_id: string;
   user_id: string;
   type: string;
-  metadata: {
-    intent: string;
-    turn_count: number;
-    additional_data: { [key: string]: string };
-  };
+  metadata: { timestamp: string };
   audio_content?: Uint8Array;
+  error?: string;
 }
 
 export interface ChatServiceClient {

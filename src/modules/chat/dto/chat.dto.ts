@@ -84,7 +84,7 @@ export class ChatRequestDto {
     example: { language: 'en', timezone: 'UTC' },
     required: false,
   })
-  context: Record<string, string>;
+  context: Record<string, any>;
 
   @ApiProperty({
     description: 'Text-to-speech settings',
@@ -92,30 +92,6 @@ export class ChatRequestDto {
     required: false,
   })
   tts_settings?: TTSSettingsDto;
-}
-
-export class MetadataMessageDto {
-  @ApiProperty({
-    description: 'The detected intent',
-    example: 'greeting',
-  })
-  intent: string;
-
-  @ApiProperty({
-    description: 'Number of turns in the conversation',
-    example: 1,
-  })
-  turn_count: number;
-
-  @ApiProperty({
-    description: 'Additional metadata',
-    example: { confidence: '0.95' },
-    type: 'object',
-    additionalProperties: {
-      type: 'string',
-    },
-  })
-  additional_data: Record<string, string>;
 }
 
 export class ChatResponseDto {
@@ -145,9 +121,9 @@ export class ChatResponseDto {
 
   @ApiProperty({
     description: 'Message metadata',
-    type: MetadataMessageDto,
+    example: { timestamp: '2023-10-01T12:00:00Z' },
   })
-  metadata: MetadataMessageDto;
+  metadata: Record<string, any>;
 
   @ApiProperty({
     description: 'Audio content in bytes',

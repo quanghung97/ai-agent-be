@@ -11,6 +11,7 @@ import { CacheableMemory } from 'cacheable';
 import { UserModule } from './modules/user/user.module';
 import { SocketModule } from './modules/socket/socket.module';
 import { MediaModule } from './modules/media/media.module';
+import { VectorStoreModule } from './modules/vector-store/vector-store.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { MediaModule } from './modules/media/media.module';
       }),
       inject: [ConfigService],
     }),
+    VectorStoreModule,
     SocketModule,
     MediaModule,
     AuthModule,

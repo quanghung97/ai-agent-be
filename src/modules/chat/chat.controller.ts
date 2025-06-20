@@ -8,6 +8,7 @@ import { Paginate, PaginateQuery, ApiOkPaginatedResponse, ApiPaginationQuery } f
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 import { conversationPaginateConfig, ConversationPaginateDto } from './filter/conversation.filter';
+import { VectorStoreServicegRPC } from '../vector-store/grpc/vector-store.grpc';
 
 @ApiTags('Chat')
 @Controller('chats')
@@ -15,6 +16,7 @@ import { conversationPaginateConfig, ConversationPaginateDto } from './filter/co
 export class ChatController {
   constructor(
     private readonly chatServicegRPC: ChatServicegRPC,
+    private readonly vectorStoregRPC: VectorStoreServicegRPC,
     private readonly chatService: ChatService
   ) {}
 
@@ -46,14 +48,61 @@ export class ChatController {
   async sendMessage(
     @Body() chatRequest: ChatRequestDto,
   ): Promise<ChatResponseDto> {
+    // TODO: transactions + error handling
     // Ensure the agent configuration is set up
     await this.chatService.ensureAgentConfig(chatRequest.agent_id);
 
+    // Get recent conversations
+    const recentConversations = await this.chatService.getRecentConversations(
+      chatRequest.user_id,
+      chatRequest.agent_id
+    );
+
+    // Format as array of objects for JSON.stringify
+    const conversationHistory = recentConversations.map(conv => ({
+      message: conv.message,
+      response: conv.response,
+      timestamp: conv.createdAt.toISOString()
+    }));
+
+    // Prepare request for gRPC
+    const enhancedRequest = {
+      user_id: chatRequest.user_id,
+      message: chatRequest.message,
+      session_id: chatRequest.session_id,
+      agent_id: chatRequest.agent_id,
+      recent_history: JSON.stringify(conversationHistory),
+      tts_settings: chatRequest.tts_settings
+    };
+
     const response = await firstValueFrom(
-      await this.chatServicegRPC.processMessage(chatRequest),
+      await this.chatServicegRPC.processMessage(enhancedRequest),
+    );
+
+    // TODO: move save conversation to a job or queue
+    // Save the new conversation
+    await this.chatService.saveConversation(
+      chatRequest.session_id,
+      chatRequest.user_id,
+      chatRequest.agent_id,
+      chatRequest.message,
+      response
+    );
+
+    // Store in vector DB (metadata must match proto: only timestamp)
+    await firstValueFrom(
+      this.vectorStoregRPC.storeConversation({
+        user_id: chatRequest.user_id,
+        agent_id: chatRequest.agent_id,
+        session_id: chatRequest.session_id,
+        message: chatRequest.message,
+        response: response.response,
+        metadata: response.metadata // should be { timestamp: ... }
+      })
     );
 
     // TODO: storage for audio content
+
     return {
       ...response,
       audio_content: response.audio_content

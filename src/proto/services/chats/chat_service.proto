@@ -11,9 +11,19 @@ message ChatRequest {
   string user_id = 1;
   string message = 2;
   string session_id = 3;
-  string agent_id = 4;  // Add agent_id field
-  map<string, string> context = 5;
+  string agent_id = 4;
+  string recent_history = 5; // JSON stringify
   TTSSettings tts_settings = 6;
+}
+
+message ChatResponse {
+  string response = 1;
+  string session_id = 2;
+  string user_id = 3;
+  string type = 4;
+  Metadata metadata = 5;
+  bytes audio_content = 6;
+  string error = 7;
 }
 
 message TTSSettings {
@@ -30,17 +40,7 @@ message VoiceSettings {
   float speed = 5;
 }
 
-message ChatResponse {
-  string response = 1;
-  string session_id = 2;
-  string user_id = 3;
-  string type = 4;
-  MetadataMessage metadata = 5;
-  bytes audio_content = 6;
+message Metadata {
+  string timestamp = 1;
 }
 
-message MetadataMessage {
-  string intent = 1;
-  int32 turn_count = 2;
-  map<string, string> additional_data = 3;
-}

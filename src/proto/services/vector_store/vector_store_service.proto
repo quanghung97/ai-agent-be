@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package services.vector_store;
+
+service VectorStoreService {
+  rpc StoreConversation (StoreConversationRequest) returns (StoreConversationResponse) {}
+}
+
+message StoreConversationRequest {
+  string user_id = 1;
+  string agent_id = 2;
+  string session_id = 3;
+  string message = 4;
+  string response = 5;
+  Metadata metadata = 6;
+}
+
+message StoreConversationResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message Metadata {
+  string timestamp = 1;
+}
