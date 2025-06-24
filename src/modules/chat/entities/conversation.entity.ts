@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseEntity } from '../../../common/entities/base.entity';
-import { Agent } from '../../agent/entities/agent.entity';
-import { User } from 'src/modules/user/entities/user.entity';
+import { BaseEntity } from '@common/entities/base.entity';
+import { Agent } from '@agent/entities/agent.entity';
+import { User } from '@user/entities/user.entity';
 
 @Entity('conversations')
 export class Conversation extends BaseEntity {

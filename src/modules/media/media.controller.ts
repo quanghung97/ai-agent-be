@@ -23,7 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { RequestWithUser } from '@common/interfaces/request-with-user.interface';
 
 @ApiTags('Media')
 @ApiBearerAuth()

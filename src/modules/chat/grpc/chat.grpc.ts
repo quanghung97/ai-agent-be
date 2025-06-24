@@ -22,7 +22,7 @@ export class ChatServicegRPC implements OnModuleInit {
       transport: Transport.GRPC,
       options: {
         package: 'services.chats',
-        protoPath: 'src/proto/services/chats/chat_service.proto',
+        protoPath: join(__dirname, '../../../proto/services/chats/chat_service.proto'),
         url: grpcUrl,
         loader: {
           keepCase: true,

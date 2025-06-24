@@ -1,7 +1,7 @@
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Agent } from 'src/modules/agent/entities/agent.entity';
+import { Agent } from '@agent/entities/agent.entity';
 import { Equal, Repository } from 'typeorm';
 import { Conversation } from '../entities/conversation.entity';
 import { ChatResponse } from '../grpc/interfaces/chats.interface';

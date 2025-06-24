@@ -1,5 +1,5 @@
 import { Entity, Column } from 'typeorm';
-import { BaseEntity } from '../../../common/entities/base.entity';
+import { BaseEntity } from '@common/entities/base.entity';
 
 @Entity('ai_agents')
 export class Agent extends BaseEntity {

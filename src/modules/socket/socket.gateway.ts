@@ -1,4 +1,4 @@
-import { AuthService } from 'src/modules/auth/auth.service';
+import { AuthService } from '@auth/auth.service';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -9,7 +9,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { ChatServicegRPC } from '../chat/grpc/chat.grpc';
 import { ChatMessage } from './interfaces/chat.interface';
-import { ChatService } from 'src/modules/chat/services/chat.service';
+import { ChatService } from '@chat/services/chat.service';
 import { firstValueFrom } from 'rxjs';
 
 interface UserChannelMap {

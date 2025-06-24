@@ -1,6 +1,6 @@
 import { Column, Index, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { Media } from './media.entity';
-import { BaseEntity } from 'src/common/entities/base.entity';
+import { BaseEntity } from '@common/entities/base.entity';
 
 @Entity('media_imageables')
 @Index(['imageableId', 'imageableType'])

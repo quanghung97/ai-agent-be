@@ -16,7 +16,7 @@ import { AttachToEntityDto } from '../dto/attach-to-entity.dto';
 import { DetachToEntityDto } from '../dto/detach-to-entity.dto';
 import { FileType } from '../enums/file-type.enum';
 import { FileSizeUnit } from '../enums/file-size-unit.enum';
-import { UserToken } from 'src/common/interfaces/user-token.interface';
+import { UserToken } from '@common/interfaces/user-token.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

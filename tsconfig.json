@@ -9,6 +9,7 @@
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
+    // "rootDir": "./src",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
@@ -16,6 +17,20 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@common/*": ["src/common/*"],
+      "@agent/*": ["src/modules/agent/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@user/*": ["src/modules/user/*"],
+      "@media/*": ["src/modules/media/*"],
+      "@chat/*": ["src/modules/chat/*"],
+      "@socket/*": ["src/modules/socket/*"],
+      "@vector-store/*": ["src/modules/vector-store/*"],
+      "@voice/*": ["src/modules/voice/*"],
+    }
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   }
 }

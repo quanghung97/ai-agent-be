@@ -1,6 +1,6 @@
 import { Column, Index, Entity, OneToMany } from 'typeorm';
 import { MediaImageable } from './mediaImageable.entity';
-import { BaseEntity } from 'src/common/entities/base.entity';
+import { BaseEntity } from '@common/entities/base.entity';
 
 @Entity('medias')
 export class Media extends BaseEntity {

@@ -3,6 +3,7 @@ import { ClientGrpc, Client, Transport, ClientProxyFactory } from '@nestjs/micro
 import { Observable } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { StoreConversationRequest, StoreConversationResponse, VectorStoreServiceClient } from './interfaces/vector-store.interface';
+import { join } from 'path';
 
 @Injectable()
 export class VectorStoreServicegRPC implements OnModuleInit {
@@ -20,7 +21,7 @@ export class VectorStoreServicegRPC implements OnModuleInit {
       transport: Transport.GRPC,
       options: {
         package: 'services.vector_store',
-        protoPath: 'src/proto/services/vector_store/vector_store_service.proto',
+        protoPath: join(__dirname, '../../../proto/services/vector_store/vector_store_service.proto'),
         url: grpcUrl,
         loader: {
           keepCase: true,

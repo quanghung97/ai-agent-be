@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Equal, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
-import { User } from 'src/modules/user/entities/user.entity';
+import { User } from '@user/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import * as appleSignin from 'apple-signin-auth'; // Add this import
 

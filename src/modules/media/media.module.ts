@@ -4,7 +4,7 @@ import { MediaController } from './media.controller';
 import { MinioModule } from 'nestjs-minio-client';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from 'src/modules/user/user.module';
+import { UserModule } from '@user/user.module';
 import { Media } from './entities/media.entity';
 import { MediaImageable } from './entities/mediaImageable.entity';
 

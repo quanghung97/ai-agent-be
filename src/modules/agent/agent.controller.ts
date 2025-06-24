@@ -14,7 +14,7 @@ import { AgentService } from './services/agent.service';
 import { CreateAgentDto, UpdateAgentDto } from './dto/agent.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { RequestWithUser } from '@common/interfaces/request-with-user.interface';
 
 @ApiTags('AI Agents')
 @ApiBearerAuth()

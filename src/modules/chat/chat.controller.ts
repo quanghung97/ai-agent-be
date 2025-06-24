@@ -6,7 +6,7 @@ import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
 import { ChatService } from './services/chat.service';
 import { Paginate, PaginateQuery, ApiOkPaginatedResponse, ApiPaginationQuery } from 'nestjs-paginate';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { RequestWithUser } from '@common/interfaces/request-with-user.interface';
 import { conversationPaginateConfig, ConversationPaginateDto } from './filter/conversation.filter';
 import { VectorStoreServicegRPC } from '../vector-store/grpc/vector-store.grpc';
 
