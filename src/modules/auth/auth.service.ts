@@ -35,7 +35,11 @@ export class AuthService {
   async verifyGoogleTokenMobile(idToken: string) {
     const ticket = await this.googleClient.verifyIdToken({
       idToken,
-      audience: this.configService.get<string>('GOOGLE_CLIENT_ID'), // <-- Use configService
+      audience: [
+        this.configService.get<string>('GOOGLE_CLIENT_ID') || '',
+        this.configService.get<string>('GOOGLE_CLIENT_ID_IOS') || '',
+        this.configService.get<string>('GOOGLE_CLIENT_ID_ANDROID') || '',
+      ], // <-- Use configService
     });
     const payload = ticket.getPayload();
 
