@@ -1,11 +1,14 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
 import { VoiceService } from './voice.service';
 import { CreateVoiceDto, UpdateVoiceDto } from './dto/voice.dto';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { Paginate, PaginateQuery, ApiOkPaginatedResponse, ApiPaginationQuery } from 'nestjs-paginate';
 import { voicePaginateConfig, VoicePaginateDto } from './filter/voice.filter';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Voice')
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 @Controller('voice')
 export class VoiceController {
   constructor(private readonly voiceService: VoiceService) {}
