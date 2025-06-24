@@ -24,10 +24,10 @@ export class AppleStrategy extends PassportStrategy(Strategy, 'apple') {
       clientID: configService.get('APPLE_CLIENT_ID') as string,
       teamID: configService.get('APPLE_TEAM_ID') as string,
       keyID: configService.get('APPLE_KEY_ID') as string,
-      privateKeyString: fs.readFileSync(
-        configService.get('APPLE_PRIVATE_KEY_PATH') as string,
-        'utf8',
-      ),
+      // privateKeyString: fs.readFileSync(
+      //   configService.get('APPLE_PRIVATE_KEY_PATH') as string,
+      //   'utf8',
+      // ),
       callbackURL: '/api/v1/auth/apple/callback',
       scope: ['name', 'email'],
       passReqToCallback: false,
