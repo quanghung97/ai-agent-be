@@ -40,12 +40,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(swaggerPath, app, document);
 
-  await app.listen(port);
+  await app.listen(port || 3000, '0.0.0.0');
   console.log(
-    `Application is running on: http://localhost:${port}/${globalPrefix}`,
+    `Application is running on: http://0.0.0.0:${port}/${globalPrefix}`,
   );
   console.log(
-    `Swagger UI is available at: http://localhost:${port}/${swaggerPath}`,
+    `Swagger UI is available at: http://0.0.0.0:${port}/${swaggerPath}`,
   );
 }
 bootstrap().catch(error => {
