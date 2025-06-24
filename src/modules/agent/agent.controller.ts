@@ -12,13 +12,14 @@ import {
 import { Request } from 'express';
 import { AgentService } from './services/agent.service';
 import { CreateAgentDto, UpdateAgentDto } from './dto/agent.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
 @ApiTags('AI Agents')
-@Controller('agents')
+@ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
+@Controller('agents')
 export class AgentController {
   constructor(private readonly agentService: AgentService) {}
 

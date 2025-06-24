@@ -17,7 +17,6 @@ import { CreateMediaDto, UpdateMediaDto } from './dto';
 import {
   ApiBearerAuth,
   ApiConsumes,
-  ApiExcludeController,
   ApiOperation,
   ApiQuery,
   ApiTags,
@@ -26,10 +25,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
-@ApiExcludeController()
-@ApiTags('MediaManagement')
+@ApiTags('Media')
 @ApiBearerAuth()
-@SetMetadata('moduleName', 'MediaModule')
 @UseGuards(AuthGuard('jwt'))
 @Controller('medias')
 export class MediaController {

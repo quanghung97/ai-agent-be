@@ -1,5 +1,5 @@
 import { Controller, Post, Sse, Body, Get, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { Observable, Subject, firstValueFrom } from 'rxjs';
 import { ChatServicegRPC } from './grpc/chat.grpc';
 import { ChatRequestDto, ChatResponseDto } from './dto/chat.dto';
@@ -11,8 +11,9 @@ import { conversationPaginateConfig, ConversationPaginateDto } from './filter/co
 import { VectorStoreServicegRPC } from '../vector-store/grpc/vector-store.grpc';
 
 @ApiTags('Chat')
-@Controller('chats')
+@ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
+@Controller('chats')
 export class ChatController {
   constructor(
     private readonly chatServicegRPC: ChatServicegRPC,

@@ -12,6 +12,7 @@ import { UserModule } from './modules/user/user.module';
 import { SocketModule } from './modules/socket/socket.module';
 import { MediaModule } from './modules/media/media.module';
 import { VectorStoreModule } from './modules/vector-store/vector-store.module';
+import { VoiceModule } from './modules/voice/voice.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { VectorStoreModule } from './modules/vector-store/vector-store.module';
     MediaModule,
     AuthModule,
     ChatModule,
+    VoiceModule,
     AgentModule,
     UserModule
   ],
