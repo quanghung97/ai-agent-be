@@ -9,7 +9,7 @@ import { AuthGuard } from '@nestjs/passport';
 @ApiTags('Voice')
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
-@Controller('voice')
+@Controller('voices')
 export class VoiceController {
   constructor(private readonly voiceService: VoiceService) {}
 
